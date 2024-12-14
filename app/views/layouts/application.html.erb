@@ -2,10 +2,33 @@
 <html>
   <head>
     <title>Photogram Final</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
   </head>
 
   <body>
+    <nav>
+      <ul>
+        <li><%= link_to "All users", users_path %></li>
+        <li><%= link_to "All public photos", photos_path %></li>
+        <% if user_signed_in? %>
+          <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>
+        <% else %>
+          <li><%= link_to "Sign in", new_user_session_path %></li>
+          <li><%= link_to "Sign up", new_user_registration_path %></li>
+        <% end %>
+      </ul>
+    </nav>
+
+    <% if notice %>
+      <p style="color:green;"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p style="color:red;"><%= alert %></p>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
