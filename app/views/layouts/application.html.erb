@@ -3,9 +3,28 @@
   <head>
     <title>Photogram Final</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
   </head>
-
   <body>
+    <nav>
+      <%= link_to "All users", "/users" %> |
+      <%= link_to "All public photos", "/photos" %> |
+      <% if user_signed_in? %>
+        <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to "Sign in", new_user_session_path %> |
+        <%= link_to "Sign up", new_user_registration_path %>
+      <% end %>
+    </nav>
+    <hr>
+
+    <% if notice.present? %>
+      <p style="color: green;"><%= notice %></p>
+    <% end %>
+    <% if alert.present? %>
+      <p style="color: red;"><%= alert %></p>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

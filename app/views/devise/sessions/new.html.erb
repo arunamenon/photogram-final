@@ -1,0 +1,19 @@
+<h2>Log in</h2>
+
+<%= form_with(url: user_session_path, method: :post, local: true) do |form| %>
+  <div>
+    <%= form.label :email, "Email" %>
+    <%= form.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div>
+    <%= form.label :password, "Password" %>
+    <%= form.password_field :password, autocomplete: "current-password" %>
+  </div>
+
+  <div>
+    <%= form.submit "Log in" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

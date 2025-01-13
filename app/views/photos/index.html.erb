@@ -1,0 +1,32 @@
+<!-- app/views/photos/index.html.erb -->
+
+<h1>All public photos</h1>
+
+<% if user_signed_in? %>
+  <!-- Show form to add photo -->
+  <h2>Add a new photo</h2>
+  <%= form_with(url: photos_path, method: :post, local: true) do |f| %>
+    <div>
+      <%= label_tag :image, "Image" %>
+      <%= f.text_field :image %>
+    </div>
+    <div>
+      <%= label_tag :caption, "Caption" %>
+      <%= f.text_area :caption %>
+    </div>
+    <%= f.submit "Add photo" %>
+  <% end %>
+<% end %>
+
+<hr>
+
+<% @photos.each do |photo| %>
+  <div style="margin-bottom: 2em;">
+    <img src="<%= photo.image %>" style="max-width: 200px;">
+    <p><%= photo.caption %></p>
+    <p>By <%= photo.owner.username if photo.owner %>,
+       <%= time_ago_in_words(photo.created_at) %> ago.
+       Likes: <%= photo.likes_count %></p>
+    <p><%= link_to "Show details", photo_path(photo.id) %></p>
+  </div>
+<% end %>

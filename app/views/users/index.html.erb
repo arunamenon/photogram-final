@@ -1,0 +1,31 @@
+<!-- app/views/users/index.html.erb -->
+
+<h1>All Users</h1>
+
+<table border="1">
+  <tr>
+    <th>Username</th>
+    <th>Private?</th>
+    <% if user_signed_in? %>
+      <th>Follow/Unfollow</th>
+    <% end %>
+  </tr>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.username %></td>
+      <td><%= user.private? ? "Yes" : "No" %></td>
+      <% if user_signed_in? %>
+        <td>
+          <% if user == current_user %>
+            <!-- It's me, so no follow/unfollow needed -->
+            (this is you)
+          <% else %>
+            <!-- Render partial that shows Follow / Unfollow / Cancel / etc. based on follow_requests -->
+            <%= render "follow_button", { :other_user => user } %>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

@@ -1,0 +1,41 @@
+<!-- app/views/users/show.html.erb -->
+
+<% if @user.nil? %>
+  <p>User not found.</p>
+  <% return %>
+<% end %>
+
+<!-- If user is private and we’re not allowed to see them, handle that logic in the controller or here. -->
+
+<h1><%= @user.username %>'s Profile</h1>
+
+<p>Private: <%= @user.private? %></p>
+<p>Followers: <%= @user.received_follow_requests.where(status: "accepted").count %></p>
+<p>Following: <%= @user.sent_follow_requests.where(status: "accepted").count %></p>
+<p>Photos added: <%= @user.photos.count %></p>
+
+<!-- Links to feed, liked photos, discover -->
+<ul>
+  <li><%= link_to "Feed", user_feed_path(@user.username) %></li>
+  <li><%= link_to "Liked Photos", user_liked_photos_path(@user.username) %></li>
+  <li><%= link_to "Discover", user_discover_path(@user.username) %></li>
+</ul>
+
+<!-- If it's your own profile, maybe show an edit link or pending follow requests, etc. -->
+<% if @user == current_user %>
+  <h2>Pending follow requests</h2>
+  <% @user.received_follow_requests.where(status: "pending").each do |fr| %>
+    <p><%= fr.sender.username %> wants to follow you</p>
+  <% end %>
+<% end %>
+
+<hr>
+<h2>Photos by <%= @user.username %></h2>
+<% @user.photos.each do |photo| %>
+  <div>
+    <img src="<%= photo.image %>" style="max-width: 200px;">
+    <p>Caption: <%= photo.caption %></p>
+    <p>Likes: <%= photo.likes_count %> | Posted <%= time_ago_in_words(photo.created_at) %> ago</p>
+    <p><%= link_to "Photo details", photo_path(photo) %></p>
+  </div>
+<% end %>
